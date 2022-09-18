@@ -25,16 +25,25 @@ const SongList = ({songList=songs, selectedSong, setSelectedSong}) => {
     })
 
     const submitSong = () => {
-        setDisplayedSongs([...displayedSongs, songData])
-        setSongData({
-            title: "",
-            artist: "",
-            year: "",
-            album: "",
-            image: null,
-            audio: null,
-        })
-        setOpen(false)
+        if(
+            songData.title !== "" &&
+            songData.artist !== "" &&
+            songData.year !== "" &&
+            songData.album !== "" &&
+            songData.image !== null &&
+            songData.audio !== null
+        ) {
+            setDisplayedSongs([...displayedSongs, songData])
+            setSongData({
+                title: "",
+                artist: "",
+                year: "",
+                album: "",
+                image: null,
+                audio: null,
+            })
+            setOpen(false)
+        }
     }
 
     useEffect(() => {

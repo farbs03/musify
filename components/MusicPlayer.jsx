@@ -75,7 +75,7 @@ const MusicPlayer = ({song, setSong}) => {
                                             <BackwardIcon className='w-5 h-5' />
                                         </button>
 
-                                        <button onClick={() => {}} className='p-4 rounded-full hover:bg-gray-200 transition duration-200 ease-in'>
+                                        <button onClick={() => setPlaying(!playing)} className='p-4 rounded-full hover:bg-gray-200 transition duration-200 ease-in'>
                                             {playing ?
                                                 <PauseIcon className='w-7 h-7' />
                                                 :
