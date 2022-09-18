@@ -15,6 +15,28 @@ const SongList = ({songList=songs, selectedSong, setSelectedSong}) => {
     const [query, setQuery] = useState('')
     const [displayedSongs, setDisplayedSongs] = useState(songList)
 
+    const [songData, setSongData] = useState({
+        title: "",
+        artist: "",
+        year: "",
+        album: "",
+        image: null,
+        audio: null,
+    })
+
+    const submitSong = () => {
+        setDisplayedSongs([...displayedSongs, songData])
+        setSongData({
+            title: "",
+            artist: "",
+            year: "",
+            album: "",
+            image: null,
+            audio: null,
+        })
+        setOpen(false)
+    }
+
     useEffect(() => {
         let newSongs = []
         for(let i = 0; i < songs.length; i++) {
@@ -28,6 +50,19 @@ const SongList = ({songList=songs, selectedSong, setSelectedSong}) => {
     }, [query])
     
     const [open, setOpen] = useState(false)
+
+    const handleAudioChange = (e) => {
+        if (e.target.files[0]) {
+          setSongData({...songData, audio: URL.createObjectURL(e.target.files[0])});
+        }
+    };
+
+    const handleImageChange = (e) => {
+        if (e.target.files[0]) {
+          setSongData({...songData, image: URL.createObjectURL(e.target.files[0])});
+          console.log(e.target.files[0])
+        }
+    };
 
     return (
         <div className='max-w-sm w-full mx-auto md:mx-0'>
@@ -64,12 +99,71 @@ const SongList = ({songList=songs, selectedSong, setSelectedSong}) => {
 
             <Modal open={open} setOpen={setOpen}>
                 <p className="font-bold text-lg mb-2">Add Song</p>
-                <button className='bg-blue-500 rounded-md text-white font-semibold px-4 py-2'>Upload mp3</button>
+                
+                <label htmlFor='audio-upload' className='bg-blue-500 rounded-md text-white font-semibold px-4 py-2'>Upload mp3</label>
+                
+                <input 
+                    className='hidden'
+                    id='audio-upload' 
+                    type='file'
+                    onChange={handleAudioChange} 
+                />
+                
                 <p className="mt-2 mb-1 font-semibold">Upload Photo</p>
-                <div className="aspect-square w-80 border-2 border-dashed border-gray-200 rounded-md grid place-items-center">
+
+                <input 
+                    className='hidden'
+                    id='image-upload' 
+                    type='file'
+                    accept="image/*"
+                    onChange={handleImageChange} 
+                />
+
+                <label htmlFor='image-upload' className="mb-2 cursor-pointer aspect-square w-80 border-2 border-dashed border-gray-200 rounded-md grid place-items-center">
                     <PhotoIcon className='w-12 h-12 text-gray-500' />
-                </div>
-                <button onClick={() => {}} className='bg-blue-500 rounded-md text-white font-semibold px-4 py-2 mt-4 block ml-auto'>Save</button>
+                </label>
+
+                <label className='text-sm font-semibold my-2'>
+                    Title
+                    <input 
+                        type='text'
+                        value={songData.title}
+                        onChange={(e) => setSongData({...songData, title: e.target.value})}
+                        className="bg-gray-100 border border-white text-sm rounded-md focus:bg-white focus:ring-blue-500 focus:border-blue-500 p-2.5 transition duration-200 ease-in w-full block"
+                    />
+                </label>
+
+                <label className='text-sm font-semibold my-2'>
+                    Artist
+                    <input 
+                        type='text'
+                        value={songData.artist}
+                        onChange={(e) => setSongData({...songData, artist: e.target.value})}
+                        className="bg-gray-100 border border-white text-sm rounded-md focus:bg-white focus:ring-blue-500 focus:border-blue-500 p-2.5 transition duration-200 ease-in w-full block"
+                    />
+                </label>
+
+                <label className='text-sm font-semibold my-2'>
+                    Year
+                    <input 
+                        type='text'
+                        value={songData.year}
+                        onChange={(e) => setSongData({...songData, year: e.target.value})}
+                        className="bg-gray-100 border border-white text-sm rounded-md focus:bg-white focus:ring-blue-500 focus:border-blue-500 p-2.5 transition duration-200 ease-in w-full block"
+                    />
+                </label>
+
+                <label className='text-sm font-semibold my-2'>
+                    Album
+                    <input 
+                        type='text'
+                        value={songData.album}
+                        onChange={(e) => setSongData({...songData, album: e.target.value})}
+                        className="bg-gray-100 border border-white text-sm rounded-md focus:bg-white focus:ring-blue-500 focus:border-blue-500 p-2.5 transition duration-200 ease-in w-full block"
+                    />
+                </label>
+
+                <button onClick={submitSong} className='bg-blue-500 rounded-md text-white font-semibold px-4 py-2 mt-4 block ml-auto'>Save</button>
             </Modal>
 
         </div>
